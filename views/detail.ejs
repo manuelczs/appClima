@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <title>Test</title>
+  <link rel="stylesheet" type="text/css" href="/css/style.css">
+  <link href='https://fonts.googleapis.com/css?family=Open+Sans:300' rel='stylesheet' type='text/css'>
+</head>
+
+<body>
+  <div class="container">
+    <fieldset>
+      <% if(weather !== null){ %>
+        <p>
+          <%= weather %>
+          <script>
+    function initMap() {
+      let map = new google.maps.Map(document.getElementById('map'), {
+        center: { lat: -32.142933, lng: -63.801753 },
+        zoom: 7
+      });
+      google.maps.event.addListener(map, 'click', function(event) {
+        let lat = event.latLng.lat()
+        let lng = event.latLng.lng()
+
+        $.ajax({
+          data: { lat, lng },
+          url: '/',
+          type: 'POST',
+          success: function (response) {
+            document.body.innerHTML = response;
+          }
+        });
+      });
+    }
+  </script>
+        </p>
+        <% } %>
+
+          <% if(error !== null){ %>
+            <p>
+              <%= error %>
+            </p>
+            <% } %>
+    </fieldset>
+  </div>
+</body>
+
+</html>

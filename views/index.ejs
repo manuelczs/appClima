@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <title>Test</title>
+  <link rel="stylesheet" type="text/css" href="/css/style.css">
+  <link href='https://fonts.googleapis.com/css?family=Open+Sans:300' rel='stylesheet' type='text/css'>
+</head>
+
+<body>
+  <div class="container">
+    <fieldset>
+      <form action="/" method="post">
+        <h1>Click on your city to get temp</h1>
+        <div class="temp">0</div>
+        <div id="map"></div>
+      </form>
+      <% if(weather !== null){ %>
+      <p>
+        <%= weather %>
+      </p>
+      <% } %>
+
+      <% if(error !== null){ %>
+      <p>
+        <%= error %>
+      </p>
+      <% } %>
+    </fieldset>
+  </div>
+  <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+    crossorigin="anonymous"></script>
+
+  <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCj9HJfE-NnwIY4NXRuvp7mdcXIwo3PSgo&callback=initMap"></script>
+
+  <script>
+    function initMap() {
+      let map = new google.maps.Map(document.getElementById('map'), {
+        center: { lat: -32.142933, lng: -63.801753 },
+        zoom: 7
+      });
+      google.maps.event.addListener(map, 'click', function(event) {
+        let lat = event.latLng.lat()
+        let lng = event.latLng.lng()
+
+        $.ajax({
+          data: { lat, lng },
+          url: '/',
+          type: 'POST',
+          success: function (response) {
+            console.log(response)
+
+            let temp = response.main.temp;
+
+            console.log(temp)
+
+            document.querySelector('.temp').innerHTML = temp;
+
+          }
+        });
+      });
+    }
+  </script>
+</body>
+
+</html>
